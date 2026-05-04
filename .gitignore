@@ -1,0 +1,21 @@
+# Exclude whole directories
+.vscode/
+build/
+build2/
+charts/
+data/
+docs/
+external/
+latex/
+
+# Some exceptions
+!external/correct Bazel build commands.txt
+!external/qwtss_exception_keys (alien tile count, Line_Max violators) - 160 to 170 defects (extended data format).db
+
+# Exclude individual files
+*.log
+src/research/MicroGrinders.cpp
+src/research/MicroGrinders.h
+src/research/QwtssPoW.cu
+src/research/QwtssPoW.h
+
