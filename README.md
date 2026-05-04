@@ -27,6 +27,12 @@ The repository is organized as follows:
 | **/src/research** | Various auxiliary logic supporting findings in the whitepaper, cryptanalysis, statistics and data collection. |
 | **/src/tests** | A comprehensive test suite, including 77 unique, targeted sabotage attacks on the AIR constraints. |
 
+## Installation & Binaries  
+For users on Ubuntu 24.04 LTS, pre-compiled binaries are available. 
+[Download the latest release here](https://github.com/axonetric/qwtss/releases/latest).
+
+To build from source on other Linux distributions, see the build instructions below.
+
 ## Build Requirements  
 
 ### System Dependencies  
