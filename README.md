@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![C++17](https://img.shields.io/badge/Standard-C++17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
-[![Paper](https://img.shields.io/badge/Paper-PDF-red.svg)](./Reeves_2026_QWTSS_Whitepaper_v1.0.pdf)
+[![Paper](https://img.shields.io/badge/Paper-PDF-red.svg)](https://raw.githubusercontent.com/axonetric/qwtss/main/Reeves_2026_QWTSS_Whitepaper_v1.0.pdf)
 
 ### A high-performance C++/CUDA reference implementation of the QWTSS post-quantum digital signature scheme. 
 
@@ -11,7 +11,7 @@ This repository provides the core cryptographic pipeline, including the thermody
 ## Reference Paper
 **Title:** Quasiperiodic Wang Tiling zk-STARK Signatures (QWTSS): A Post-Quantum Signature Scheme Anchored in the Topologically Frustrated Glassy Phase  
 **Authors:** Kevin Reeves  
-**Link:** [Read the QWTSS Whitepaper (PDF)](./Reeves_2026_QWTSS_Whitepaper_v1.0.pdf)
+**Link:** [Read the QWTSS Whitepaper (PDF)](https://raw.githubusercontent.com/axonetric/qwtss/main/Reeves_2026_QWTSS_Whitepaper_v1.0.pdf)
 
 ### Abstract
 The emergence of quantum computing threatens classical public-key cryptography, necessitating the development of robust post-quantum alternatives built upon structurally diverse hardness assumptions. We introduce Quasiperiodic Wang Tiling zk-STARK Signatures (QWTSS), a novel digital signature scheme grounded in the NP-hard combinatorial optimization of bounded aperiodic Wang tile sets. QWTSS generates secret keys by sampling solutions deep within the thermodynamic glassy phase of the configuration space. We empirically demonstrate that this critically constrained regime undergoes solution-space shattering and exhibits the Overlap Gap Property (OGP), fracturing into isolated, multifractal solution clusters. The resulting critically constrained operational regime provides maximum combinatorial backtracking against exact classical solvers, while the OGP inhibits heuristic local-search traversal. Furthermore, we model how the extreme phase-space anisotropy of these clusters exponentially suppresses the quantum overlap integral. By coupling this structural hardness with a zk-STARK, QWTSS enables a prover to demonstrate knowledge of a specific geometric configuration without leaking the underlying witness. This yields a highly secure, non-algebraic post-quantum primitive inextricably bound to non-trivial simulated thermodynamic work.
