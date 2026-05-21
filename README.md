@@ -3,6 +3,8 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![C++17](https://img.shields.io/badge/Standard-C++17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
 [![Paper](https://img.shields.io/badge/Paper-PDF-red.svg)](https://raw.githubusercontent.com/axonetric/qwtss/main/Reeves_2026_QWTSS_Whitepaper_v1.0.pdf)
+[![DOI](https://zenodo.org/badge/1227074964.svg)](https://doi.org/10.5281/zenodo.20320756)
+
 
 ### A high-performance C++/CUDA reference implementation of the QWTSS post-quantum digital signature scheme. 
 

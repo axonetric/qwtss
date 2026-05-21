@@ -28,6 +28,7 @@ int main(int argc, char** argv) {
     //Ammann16TileSet tileset;
     ChaCha20PRNG rng;
 
+    if (false)
     {
         LabbeJR11Oracle oracle;
         oracle.batch_export_jr11_grids_to_csv(1000, 32, 0.25);
