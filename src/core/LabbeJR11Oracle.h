@@ -32,6 +32,8 @@ public:
      */
     std::vector<int> generate_jr11_grid(double start_x, double start_y, int grid_size);
 
+    void batch_export_jr11_grids_to_csv(int num_grids, int grid_size, double temperature, const std::string& filename = "");
+
     LabbeOraclePublicKey generate_spliced_public_key(int grid_size, int num_segments, ChaCha20PRNG& rng);
 
     static bool run_labbe_oracle_unit_test();

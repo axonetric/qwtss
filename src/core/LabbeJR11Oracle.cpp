@@ -1,5 +1,10 @@
 #include "LabbeJR11Oracle.h"
 #include <boost/multiprecision/cpp_bin_float.hpp>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 using namespace boost::multiprecision;
 
@@ -142,6 +147,99 @@ struct LabbeJR11Oracle::Impl {
         return grid;
     }
 };
+
+/**
+ * @brief Generates multiple JR-11 grids and exports them to a CSV file.
+ * Each row in the CSV represents a single flattened NxN grid.
+ * @param num_grids The number of distinct datasets to generate.
+ * @param grid_size The NxN dimension of the grids (e.g., 128).
+ * @param temperature The percentage of tiles to randomly mutate (0.0 to 1.0).
+ * @param filename The output CSV filename.
+ */
+void LabbeJR11Oracle::batch_export_jr11_grids_to_csv(int num_grids, int grid_size, double temperature, const std::string& filename) {
+    // Auto-generate filename if empty
+    std::string actual_filename = filename;
+    if (actual_filename.empty()) {
+        std::ostringstream oss;
+        oss << "jr11_" << grid_size << "x" << grid_size << "_" 
+            << num_grids << "_grids_" 
+            << std::fixed << std::setprecision(2) << temperature << "_temp.csv";
+        actual_filename = oss.str();
+    }
+
+    std::ofstream outfile(actual_filename);
+    if (!outfile.is_open()) {
+        std::cerr << "Error: Could not open file " << actual_filename << " for writing.\n";
+        return;
+    }
+
+    JeandelRaoTileSet jr_tileset;
+    std::vector<Tile> alphabet = jr_tileset.get_tiles();
+
+    // Setup RNG for generating random continuous starting coordinates
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    
+    // Using the 1000 to 1000000 bounds to ensure unique slices
+    std::uniform_real_distribution<double> dist(1000.0, 1000000.0);
+
+    int total_tiles = grid_size * grid_size;
+    int num_mutations = static_cast<int>(total_tiles * temperature);
+
+    // Mutation Distributions
+    std::uniform_int_distribution<int> dist_idx(0, total_tiles - 1);
+    std::uniform_int_distribution<int> dist_new_tile(0, 9); // 10 alternative choices
+
+    std::cout << ">>> Booting C++ Batch Generator...\n";
+    std::cout << "[*] Target: " << num_grids << " grids of size " << grid_size << "x" << grid_size << "\n";
+    std::cout << "[*] Temperature: " << temperature << " (" << num_mutations << " defects per grid)\n";
+
+    int num_verified_grids = 0;
+    for (int i = 0; i < num_grids; ++i) {
+        // Generate random starting coordinates
+        double start_x = dist(gen);
+        double start_y = dist(gen);
+
+        // Extract the perfect grid
+        std::vector<int> grid = generate_jr11_grid(start_x, start_y, grid_size);
+        int oracle_defects = count_grid_defects(grid.data(), grid_size, alphabet);
+        if (oracle_defects != 0) throw std::runtime_error("batch_export_jr11_grids_to_csv failed to create a perfect oracle grid");
+        else num_verified_grids++;
+
+        // Inject Thermodynamic Noise
+        if (temperature > 0.0) {
+            for (int m = 0; m < num_mutations; ++m) {
+                int mutate_idx = dist_idx(gen);
+                int current_tile = grid[mutate_idx];
+                
+                // Fast non-colliding random pick (0 to 10 excluding current)
+                int new_tile = dist_new_tile(gen);
+                if (new_tile >= current_tile) {
+                    new_tile++; 
+                }
+                
+                grid[mutate_idx] = new_tile;
+            }
+        }
+
+        // 3. Write to CSV (Flattened representation, comma-separated)
+        for (size_t j = 0; j < grid.size(); ++j) {
+            outfile << grid[j];
+            if (j != grid.size() - 1) {
+                outfile << ",";
+            }
+        }
+        outfile << "\n"; // Next grid on a new line
+
+        // Progress tracker
+        if ((i + 1) % 10 == 0 || i == num_grids - 1) {
+            std::cout << "  ... " << (i + 1) << "/" << num_grids << " grids exported.\n";
+        }
+    }
+
+    outfile.close();
+    std::cout << ">>> SUCCESS: " << num_verified_grids << " verified grids successfully exported to " << actual_filename << "\n";
+}
 
 LabbeJR11Oracle::LabbeJR11Oracle() : pimpl(std::make_unique<Impl>()) {}
 
